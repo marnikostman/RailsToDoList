@@ -1,0 +1,30 @@
+<h1 class="text-center">Prioritize</h1>
+<%= link_to 'New Task', new_task_path %>
+
+<div class="row">
+  <div class="sortable col-xs-12" id="column-1">
+    <% if @tasks.any? %>
+        <%= render @tasks %>
+    <% else %>
+    <p>No tasks found <%= link_to "Create Task", new_task_path %></p>
+    <% end %>
+  </div>
+</div>
+
+<script>
+function updateFunction() {
+  dataObject = {};
+  dataObject.name = "Name";
+  dataObject.reorder = $( ".sortable" ).sortable( "toArray" );
+  $.ajax({
+    url: "/tasks/reorder",
+    data: dataObject,
+    type: "POST"
+  })
+}
+
+$(function() {
+  $( ".sortable" ).sortable({update: updateFunction});
+  $( ".sortable" ).disableSelection();
+});
+</script>
